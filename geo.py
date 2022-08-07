@@ -15,26 +15,26 @@ def main():
     api = overpy.Overpass()
 
     # use API to query openStreetMaps 
-    result = api.query(f'[out:json][timeout:25];(nwr["building"="yes"](around: 10000, {loc_str}););out body;>;out skel qt;')
+    result = api.query(f"""[out:json][timeout:25];(nwr["building"="yes"]
+        (around: 10000, {loc_str}););
+        out body;>;out skel qt;""")
    
     # create dict to store builduing name and distance/location
     data = {}
     
-    # iterate through way objects and if there is a building name grab it and the coordinates
+    # iterate through way objects if there is a building grab name/coordinates
     for way in result.ways:
         if way.tags.get('name', 'n/a') != 'n/a':
             lat_lon = (f'{round(way.nodes[0].lat, 5)}, {round(way.nodes[0].lon, 5)}')
-            data.update({way.tags.get('name', 'n/a'): [round(geopy.distance.geodesic(loc, lat_lon).miles, 2), lat_lon]})
+            data.update({way.tags.get('name', 'n/a'): [round(geopy.distance.geodesic( \
+                loc, lat_lon).miles, 2), lat_lon]})
 
     # print out closest building
     for k, v in data.items():
         print(f'Building: {k}, distance: {v[0]} miles, loc: {v[1]}')
 
-# function to get current computer location using IP address
+# function to get current computer location using IP
 def get_location():
     g = geocoder.ip('me')
 
     return g.latlng
-
-main()
-

@@ -1,5 +1,4 @@
 # A program to find the closest building withing a 10000 meter radius of computer
-
 import overpy
 import geopy.distance
 import geocoder
@@ -35,6 +34,8 @@ def main():
 
 # function to get current computer location using IP
 def get_location():
+    print('hello')
     g = geocoder.ip('me')
-
     return g.latlng
+
+main()

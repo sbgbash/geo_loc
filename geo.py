@@ -14,9 +14,12 @@ def main():
     api = overpy.Overpass()
 
     # use API to query openStreetMaps 
-    result = api.query(f"""[out:json][timeout:25];(nwr["building"="yes"]
-        (around: 10000, {loc_str}););
-        out body;>;out skel qt;""")
+    try:
+        result = api.query(f"""[out:json][timeout:25];(nwr["building"="yes"]
+            (around: 10000, {loc_str}););
+            out body;>;out skel qt;""")
+    except overpy.exception.OverpassGatewayTimeout:
+        print("OSM Server load too high - please try again later")
    
     # create dict to store builduing name and distance/location
     data = {}
@@ -34,7 +37,6 @@ def main():
 
 # function to get current computer location using IP
 def get_location():
-    print('hello')
     g = geocoder.ip('me')
     return g.latlng
 

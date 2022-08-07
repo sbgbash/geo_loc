@@ -15,8 +15,8 @@ def main():
 
     # use API to query openStreetMaps 
     try:
-        result = api.query(f"""[out:json][timeout:25];(nwr["building"="yes"]
-            (around: 10000, {loc_str}););
+        result = api.query(f"""[out:json][timeout:25];(nw["building"="yes"]
+            (around: 1000, {loc_str}););
             out body;>;out skel qt;""")
     except overpy.exception.OverpassGatewayTimeout:
         print("OSM Server load too high - please try again later")
@@ -38,6 +38,6 @@ def main():
 # function to get current computer location using IP
 def get_location():
     g = geocoder.ip('me')
-    return g.latlng
+    return (45.538127, -122.935401)
 
 main()
